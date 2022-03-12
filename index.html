@@ -28,70 +28,78 @@
         font-weight: bold;
         padding: 2px 5px 5px 5px;
         margin: 2px;
+        user-select: none;
       }
   </style>
 </head>
 
 <body>
 
+  <button onclick="newWimble()">Add Wimble</button>
+
   <div class="wimble">
     <div class="wimbleBar">Wimbles95</div>
-  </div>
-  <div class="wimble">
-    <div class="wimbleBar">Wimbles98</div>
   </div>
 
   <script>
     // Track Some Mouse Variables
     var pointer = {state: 'up', xDiff: 0, yDiff: 0};
-    // Set Wimbles Node List
-    var wimbles = document.querySelectorAll('.wimble');
-    // Convert Node List To Array
-    var wimbles = Array.prototype.slice.call(wimbles);
     // Track Z-Index
     var zIndex = 0;
 
+    // Initialize Wimbles
+    function initializeWimbles() {
+      // Set Wimbles Node List
+      var wimbles = document.querySelectorAll('.wimble');
 
-    // Loop over Wimbles Array
-    wimbles.forEach(function(wimble) {
+      // Loop Over Wimbles Array
+      wimbles.forEach(function(wimble) {
 
-      // Store Mouse (pointer) States
-      wimble.addEventListener("mousedown", function(e) {
-        pointer.state = 'down';
-        zIndex++;
-        this.style.zIndex = zIndex;
-        if (pointer.yDiff == 0) pointer.yDiff = (this.offsetTop - e.clientY);
-        if (pointer.xDiff == 0) pointer.xDiff = (this.offsetLeft - e.clientX);
-      });
+        // Store Mouse (pointer) States
+        wimble.addEventListener("mousedown", function(e) {
+          pointer.state = 'down';
+          zIndex++;
+          this.style.zIndex = zIndex;
+          if (pointer.yDiff == 0) pointer.yDiff = (this.offsetTop - e.clientY);
+          if (pointer.xDiff == 0) pointer.xDiff = (this.offsetLeft - e.clientX);
+        });
 
-      // Release Mouse (pointer) States
-      function dropWimble() {
-        pointer.state = 'up';
-        pointer.yDiff = 0;
-        pointer.xDiff = 0;
-      }
-
-      // MouseUp Release
-      wimble.addEventListener("mouseup", function(e) {
-        dropWimble();
-      });
-
-      // MouseLeave Release
-      wimble.addEventListener("mouseleave", function(e) {
-        dropWimble();
-      });
-
-      // Drag Wimble on MouseMove
-      wimble.addEventListener("mousemove", function(e) {
-        if (pointer.state == 'down' && pointer.yDiff > -30) {
-          this.style.top = (pointer.yDiff + e.clientY) + 'px';
-          this.style.left = (pointer.xDiff + e.clientX) + 'px';
-          console.log(pointer.yDiff)
+        // Release Mouse (pointer) States
+        function dropWimble() {
+          pointer.state = 'up';
+          pointer.yDiff = 0;
+          pointer.xDiff = 0;
         }
-      });
-      
-    });
 
+        // MouseUp Release
+        wimble.addEventListener("mouseup", function() {
+          dropWimble();
+        });
+
+        // MouseLeave Release
+        wimble.addEventListener("mouseleave", function() {
+          dropWimble();
+        });
+
+        // Drag Wimble on MouseMove
+        wimble.addEventListener("mousemove", function(e) {
+          if (pointer.state == 'down' && pointer.yDiff > -30) {
+            this.style.top = (pointer.yDiff + e.clientY) + 'px';
+            this.style.left = (pointer.xDiff + e.clientX) + 'px';
+          }
+        });
+
+      });
+    }
+    
+
+    function newWimble() {
+      document.querySelector('body').innerHTML += ('<div class="wimble"><div class="wimbleBar">Wimbles95</div></div>');
+      initializeWimbles()
+    }
+
+    // Load Wimbles
+    initializeWimbles();
   </script>
 </body>
 </html>
