@@ -1,37 +1,44 @@
 <!doctype html>
 <html>
 <head>
-  <title>Dragon Stuff</title>
+  <title>Draggable Wimbles</title>
 
     <meta charset="utf-8" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type="text/css">
       body {
-        background-color: #fdfdfd;
+        background-color: #008081;
         margin: 0;
         padding: 0;
         font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
         overflow: hidden;
       }
       .wimble {
-        background-color: #f0f0f0;
-        border: 2px solid;
+        background-color: #C0C0C0;
+        border: 1px solid #2A2728;
         height: 300px;
         width: 500px;
         position: absolute;
       }
-  </style>    
+      .wimbleBar {
+        background-color: #808080;
+        color: #B0B0B0;
+        display: block;
+        font-weight: bold;
+        padding: 2px 5px 5px 5px;
+        margin: 2px;
+      }
+  </style>
 </head>
 
 <body>
 
-
   <div class="wimble">
-    Wimbles95
+    <div class="wimbleBar">Wimbles95</div>
   </div>
   <div class="wimble">
-    Wimbles98
+    <div class="wimbleBar">Wimbles98</div>
   </div>
 
   <script>
@@ -58,19 +65,28 @@
       });
 
       // Release Mouse (pointer) States
-      wimble.addEventListener("mouseup", function(e) {
+      function dropWimble() {
         pointer.state = 'up';
-        zIndex++;
-        this.style.zIndex = zIndex;
         pointer.yDiff = 0;
         pointer.xDiff = 0;
+      }
+
+      // MouseUp Release
+      wimble.addEventListener("mouseup", function(e) {
+        dropWimble();
+      });
+
+      // MouseLeave Release
+      wimble.addEventListener("mouseleave", function(e) {
+        dropWimble();
       });
 
       // Drag Wimble on MouseMove
       wimble.addEventListener("mousemove", function(e) {
-        if (pointer.state == 'down') {
+        if (pointer.state == 'down' && pointer.yDiff > -30) {
           this.style.top = (pointer.yDiff + e.clientY) + 'px';
           this.style.left = (pointer.xDiff + e.clientX) + 'px';
+          console.log(pointer.yDiff)
         }
       });
       
